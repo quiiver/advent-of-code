@@ -3,35 +3,36 @@ pub fn solution(input: &String) {
     println!("Part 2: {}", process_moves(process_input(input), &true));
 }
 
-fn process_input(input: &str) -> Vec<Vec<&str>> {
-    input.lines().map(|line| line.split("").collect()).collect()
+fn process_input(input: &str) -> Vec<Vec<String>> {
+    input
+        .lines()
+        .map(|line| line.split("").map(|s| s.to_string()).collect())
+        .collect()
 }
 
-fn update_map<'a>(map: &'a Vec<Vec<&str>>, positions: &'a [(usize, usize)]) -> Vec<Vec<&'a str>> {
-    let new_map: Vec<Vec<&str>> = map
-        .iter()
+fn update_map(map: &[Vec<String>], positions: &[(usize, usize)]) -> Vec<Vec<String>> {
+    map.iter()
         .enumerate()
-        .map(|(row_idx, row)| -> Vec<&str> {
+        .map(|(row_idx, row)| -> Vec<String> {
             row.iter()
                 .enumerate()
-                .map(|(col_idx, original)| -> &str {
+                .map(|(col_idx, original)| {
                     if positions.iter().any(|prev| prev == &(row_idx, col_idx)) {
-                        "."
+                        ".".to_string()
                     } else {
-                        original
+                        original.to_owned()
                     }
                 })
                 .collect()
         })
-        .collect();
-    new_map
+        .collect()
 }
 
-fn print_map(map: &Vec<Vec<&str>>) {
+fn print_map(map: &[Vec<String>]) {
     map.iter().for_each(|row| println!("{}", row.join("")));
 }
 
-fn process_moves(map: Vec<Vec<&str>>, remove: &bool) -> usize {
+fn process_moves(map: Vec<Vec<String>>, remove: &bool) -> usize {
     println!("Iteration");
     print_map(&map);
     let positions = find_paper(&map);
@@ -46,7 +47,7 @@ fn process_moves(map: Vec<Vec<&str>>, remove: &bool) -> usize {
 
 // fn check_boundary(cords: (i64, i64), pos: (usize, usize), bounds: ((u64, u64), (u64, u64))) {}
 
-fn find_paper(paper_map: &Vec<Vec<&str>>) -> Vec<(usize, usize)> {
+fn find_paper(paper_map: &[Vec<String>]) -> Vec<(usize, usize)> {
     paper_map
         .iter()
         .enumerate()
