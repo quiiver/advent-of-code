@@ -22,6 +22,8 @@ static SOLUTIONS: &[fn(&String)] = &[
     solutions::day02::solution,
     solutions::day03::solution,
     solutions::day04::solution,
+    solutions::day05::solution,
+    solutions::day06::solution,
 ];
 
 fn main() {
